@@ -13,11 +13,6 @@ getwd() #check working directory
 
 # Creating Summary Reports: Importing --------
 
-## Tag Matches ----
-View(nsbs_matched_full) #Check to make sure we already have our tag matches, from a previous episode
-
-# if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
-
 nsbs_matched_2021 <- read_csv("nsbs_matched_detections_2021.zip") #Import 2016 detections
 nsbs_matched_2022 <- read_csv("nsbs_matched_detections_2022.zip") # Import 2017 detections
 nsbs_matched_full <- rbind(nsbs_matched_2021, nsbs_matched_2022) #Now join the two dataframes
@@ -30,8 +25,6 @@ hfx_qual_2022 <- read_csv("hfx_qualified_detections_2022_workshop.csv")
 hfx_qual_21_22_full <- rbind(hfx_qual_2021, hfx_qual_2022) 
 
 ## Tagging and Deployment Metadata  ----
-#These are saved as XLS/XLSX files, so we need a different library to read them in.
-library(readxl)
 
 # Deployment Metadata
 hfx_deploy <- read_excel("hfx_sample_deploy_metadata_export.xlsx", skip=3) #can also do argument "sheet = XXX" if needed
@@ -51,13 +44,12 @@ library(ggmap)
 
 names(hfx_deploy)
 
-#TODO columns
 base <- get_stamenmap(
   bbox = c(left = min(hfx_deploy$DEPLOY_LONG), 
            bottom = min(hfx_deploy$DEPLOY_LAT), 
            right = max(hfx_deploy$DEPLOY_LONG), 
            top = max(hfx_deploy$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "toner-lite", 
   crop = FALSE,
   zoom = 5)
 
@@ -92,8 +84,6 @@ ggsave(plot = hfx_map, filename = "hfx_map.tiff", units="in", width=15, height=8
 #can specify location, file type and dimensions
 
 ## Array Map - Interactive ----
-library(plotly)
-
 #set your basemap
 
 geo_styling <- list(
@@ -135,7 +125,7 @@ hfx_qual_summary <- hfx_qual_21_22_full %>%
   filter(datecollected > '2021-06-01') %>% #select timeframe, stations etc.
   group_by(trackercode, station, tag_contact_pi, tag_contact_poc) %>% 
   summarize(count = n()) %>% 
-  select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
+  dplyr::select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
 
 #view our summary table
 
@@ -200,7 +190,7 @@ base <- get_stamenmap(
            bottom = min(nsbs_matched_full_no_release$latitude), 
            right = max(nsbs_matched_full_no_release$longitude), 
            top = max(nsbs_matched_full_no_release$latitude)),
-  maptype = "terrain-background", 
+  maptype = "toner-lite", 
   crop = FALSE,
   zoom = 5)
 
@@ -271,7 +261,7 @@ nsbs_tag_summary <- nsbs_tag %>%
 
 #view our summary table
 
-nsbs_tag_summary
+View(nsbs_tag_summary)
 
 ## Detection Attributes ----
 # Average location of each animal, without release records
@@ -307,7 +297,7 @@ nsbs_tag_det_summary <- tag_joined_dets %>%
   group_by(detectedby, station, latitude, longitude)  %>%  
   summarise(AvgSize = mean(`LENGTH (m)`, na.rm=TRUE))
 
-nsbs_tag_det_summary
+View(nsbs_tag_det_summary)
 
 #export our summary table as CSV
 write_csv(nsbs_tag_det_summary, "detections_summary.csv", col_names = TRUE)
@@ -317,7 +307,7 @@ write_csv(nsbs_tag_det_summary, "detections_summary.csv", col_names = TRUE)
 nsbs_matched_full_no_release %>% 
   group_by(catalognumber, station, detectedby, commonname) %>% 
   summarize(count = n()) %>% 
-  select(catalognumber, commonname, detectedby, station, count)
+  dplyr::select(catalognumber, commonname, detectedby, station, count)
 
 # list all arrays each fish was seen on, and a number_of_arrays column too
 
