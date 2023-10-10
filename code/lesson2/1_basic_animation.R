@@ -7,10 +7,12 @@ library(ggmap)
 library(tidyverse)
 
 
-setwd("/Users/bruce/Work/2023-canssi-ecr-workshop/data/otn")
+setwd("/YOUR/PATH/TO/data/otn")
+
+unzip('nsbs_matched_detections_2022.zip', overwrite = TRUE)
 
 detection_events <- #create detections event variable
-  read_otn_detections('nsbs_matched_detections_2022/nsbs_matched_detections_2022.csv') %>%
+  read_otn_detections('nsbs_matched_detections_2022.csv') %>%
   false_detections(tf = 3600) %>%  #find false detections
   filter(passed_filter != FALSE) %>% 
   detection_events(location_col = 'station', time_sep=3600)
