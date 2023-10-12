@@ -14,9 +14,6 @@ getwd() #check working directory
 # Creating Summary Reports: Importing --------
 
 ## Tag Matches ----
-View(nsbs_matched_full) #Check to make sure we already have our tag matches, from a previous episode
-
-# if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
 nsbs_matched_2021 <- read_csv("nsbs_matched_detections_2021.zip") #Import 2021 detections
 nsbs_matched_2022 <- read_csv("nsbs_matched_detections_2022.zip") # Import 2022 detections
