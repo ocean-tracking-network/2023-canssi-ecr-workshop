@@ -18,8 +18,8 @@ View(nsbs_matched_full) #Check to make sure we already have our tag matches, fro
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-nsbs_matched_2021 <- read_csv("nsbs_matched_detections_2021.zip") #Import 2016 detections
-nsbs_matched_2022 <- read_csv("nsbs_matched_detections_2022.zip") # Import 2017 detections
+nsbs_matched_2021 <- read_csv("nsbs_matched_detections_2021.zip") #Import 2021 detections
+nsbs_matched_2022 <- read_csv("nsbs_matched_detections_2022.zip") # Import 2022 detections
 nsbs_matched_full <- rbind(nsbs_matched_2021, nsbs_matched_2022) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 nsbs_matched_full <- nsbs_matched_full %>% distinct() # Use distinct to remove duplicates. 
@@ -51,7 +51,6 @@ library(ggmap)
 
 names(hfx_deploy)
 
-#TODO columns
 base <- get_stamenmap(
   bbox = c(left = min(hfx_deploy$DEPLOY_LONG), 
            bottom = min(hfx_deploy$DEPLOY_LAT), 
@@ -121,7 +120,7 @@ hfx_map_plotly <- hfx_map_plotly %>% add_markers(
 #Add layout (title + geo stying)
 
 hfx_map_plotly <- hfx_map_plotly %>% layout(
-  title = 'HFX Deployments<br />(> 2020-07-03)', geo = geo_styling #TODO dates
+  title = 'HFX Deployments<br />(> 2020-07-03)', geo = geo_styling 
 )
 
 #View map
@@ -387,15 +386,6 @@ abacus_arrays <-
 abacus_arrays #might be better with just a subset, huh??
 
 # track movement using geom_path!!
-
-
-#nsbs_matched_full_no_release %>% 
-  #group_by(catalognumber) %>% 
-  #mutate(count = (n())) %>% 
-  #group_by(catalognumber, count) %>% 
-  #arrange(desc(count)) %>% 
-  #select(catalognumber, count) %>% 
-  #View()
 
 nsbs_subset <- nsbs_matched_full %>%
   dplyr::filter(catalognumber %in% c('NSBS-Nessie', 'NSBS-1250981-2019-09-06', 
