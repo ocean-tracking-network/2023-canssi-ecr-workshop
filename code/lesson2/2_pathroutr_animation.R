@@ -11,9 +11,9 @@ library(geodata)
 setwd("YOUR/PATH/TO/data/otn")
 
 detection_events <- #create detections event variable
-  read_otn_detections('nsbs_matched_detections_2022.csv') %>% # reading detections
+  read_otn_detections('data/otn/nsbs_matched_detections_2022/nsbs_matched_detections_2022.csv') %>% # reading detections
   false_detections(tf = 3600) %>%  #find false detections
-  filter(passed_filter != FALSE) %>% 
+  dplyr::filter(passed_filter != FALSE) %>% 
   detection_events(location_col = 'station', time_sep=3600)
 
 plot_data <- detection_events %>% 
