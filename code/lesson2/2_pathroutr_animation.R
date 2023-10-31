@@ -11,7 +11,7 @@ library(geodata)
 setwd("YOUR/PATH/TO/data/otn")
 
 detection_events <- #create detections event variable
-  read_otn_detections('data/otn/nsbs_matched_detections_2022/nsbs_matched_detections_2022.csv') %>% # reading detections
+  read_otn_detections('nsbs_matched_detections_2022/nsbs_matched_detections_2022.csv') %>% # reading detections
   false_detections(tf = 3600) %>%  #find false detections
   dplyr::filter(passed_filter != FALSE) %>% 
   detection_events(location_col = 'station', time_sep=3600)
@@ -20,20 +20,17 @@ plot_data <- detection_events %>%
   dplyr::select(animal_id, mean_longitude,mean_latitude, first_detection)
 
 one_fish <- plot_data[plot_data$animal_id == "NSBS-1393342-2021-08-10",] 
-#one_fish <- plot_data[plot_data$animal_id == " NSBS-1393334-2021-08-08",]
 
-#one_fish <- one_fish %>% filter(mean_latitude < 38.90 & mean_latitude > 38.87) %>% 
-#  slice(155:160)
+#Shift the detections closer to the land so as to give a more fulsome demonstration of pathroutr's capabilities.
+one_fish_shifted <- one_fish %>% mutate(mean_longitude_shifted = mean_longitude-0.5)
 
-one_fish_donked_up <- one_fish %>% mutate(mean_longitude_donked = mean_longitude-0.5)
-
-CAN<-gadm('CANADA', level=1, path="./geodata", resolution=1)
+CAN<-gadm('CANADA', level=1, path="./geodata", resolution=2)
 
 shape_file <- CAN[CAN$NAME_1 == 'Nova Scotia',]
 
 ns_polygon <- st_as_sf(shape_file)  %>% st_transform(5070)
 
-path <- one_fish_donked_up %>%  dplyr::select(mean_longitude_donked,mean_latitude)
+path <- one_fish_donked_up %>%  dplyr::select(mean_longitude_shifted,mean_latitude)
 
 path <- SpatialPoints(path, proj4string = CRS("+proj=longlat +datum=WGS84 +no_defs"))
 
@@ -70,6 +67,4 @@ pathroutrplot.animation <-
   transition_reveal(fid) +
   shadow_mark(past = T, future = F)
 
-pathroutrplot.animation
-
-gganimate::animate(pathroutrplot.animation, nframes=400, detail=2)
+gganimate::animate(pathroutrplot.animation, nframes=100, detail=2)
