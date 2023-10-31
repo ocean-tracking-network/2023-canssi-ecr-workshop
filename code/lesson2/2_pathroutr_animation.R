@@ -30,7 +30,7 @@ shape_file <- CAN[CAN$NAME_1 == 'Nova Scotia',]
 
 ns_polygon <- st_as_sf(shape_file)  %>% st_transform(5070)
 
-path <- one_fish_donked_up %>%  dplyr::select(mean_longitude_shifted,mean_latitude)
+path <- one_fish_shifted %>%  dplyr::select(mean_longitude_shifted,mean_latitude)
 
 path <- SpatialPoints(path, proj4string = CRS("+proj=longlat +datum=WGS84 +no_defs"))
 
