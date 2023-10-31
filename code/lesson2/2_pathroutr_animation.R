@@ -20,17 +20,20 @@ plot_data <- detection_events %>%
   dplyr::select(animal_id, mean_longitude,mean_latitude, first_detection)
 
 one_fish <- plot_data[plot_data$animal_id == "NSBS-1393342-2021-08-10",] 
+#one_fish <- plot_data[plot_data$animal_id == " NSBS-1393334-2021-08-08",]
 
 #one_fish <- one_fish %>% filter(mean_latitude < 38.90 & mean_latitude > 38.87) %>% 
 #  slice(155:160)
 
-CAN<-gadm('CANADA', level=1, path="./geodata", resolution=2)
+one_fish_donked_up <- one_fish %>% mutate(mean_longitude_donked = mean_longitude-0.5)
+
+CAN<-gadm('CANADA', level=1, path="./geodata", resolution=1)
 
 shape_file <- CAN[CAN$NAME_1 == 'Nova Scotia',]
 
 ns_polygon <- st_as_sf(shape_file)  %>% st_transform(5070)
 
-path <- one_fish %>%  dplyr::select(mean_longitude,mean_latitude)
+path <- one_fish_donked_up %>%  dplyr::select(mean_longitude_donked,mean_latitude)
 
 path <- SpatialPoints(path, proj4string = CRS("+proj=longlat +datum=WGS84 +no_defs"))
 
@@ -67,4 +70,6 @@ pathroutrplot.animation <-
   transition_reveal(fid) +
   shadow_mark(past = T, future = F)
 
-gganimate::animate(pathroutrplot.animation, nframes=100)
+pathroutrplot.animation
+
+gganimate::animate(pathroutrplot.animation, nframes=400, detail=2)
