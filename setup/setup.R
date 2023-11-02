@@ -5,6 +5,11 @@
 
 # Advanced Telemetry Workshop ONLY: You must install also GDAL software, which can take a long time. See the extra setup document provided.
 
+#Due to recent issues with certain spatial packages being delisted from CRAN, you will need to install the archived version of rgeos before the package will work. 
+#You can get the most recent archive from https://cran.r-project.org/src/contrib/Archive/rgeos/. 
+#At time of writing, 0.6-4 is the most recent. 
+#You will then need to install the rgeos package. Make sure you change the path in the first line of the script.
+
 # Once R/RStudio is installed: open RStudio and run this install script. Please run it line-by-line instead of all at once in case there are errors.
 
 #Note: When running through the installs, you may encounter a prompt asking you to upgrade dependent packages.
@@ -13,6 +18,9 @@
 
 
 ## Beginner R Workshop Requirements ----
+# Install the archived rgeos package: 
+install.packages("YOUR/PATH/TO/rgeos_0.6-4.tar.gz", repos = NULL, type = "source")
+
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
 
@@ -31,19 +39,15 @@ install.packages("readxl")
 # Viridis - color scales in this package are easier to read by those with colorblindness, and print well in grey scale.
 install.packages("viridis")
 
-# rgdal
-install.packages('rgdal')
-library(rgdal)
-rgdal::getGDALVersionInfo()
-
 # glatos - acoustic telemetry package that does filtering, vis, array simulation, etc.
 install.packages('remotes')
 library(remotes) 
-remotes::install_github('ocean-tracking-network/glatos')
+remotes::install_github('ocean-tracking-network/glatos', build_vignettes = TRUE)
 
 #Additional packages for mapping.
 install.packages('mapview')
 install.packages('spdplyr')
+install.packages('geodata')
 
 #SP and Raster packages for mapping.
 install.packages('sp')
@@ -59,12 +63,13 @@ install.packages('sf')
 install.packages('stars')
 
 # Install packages for animating detection data
-install.packages('remotes')
-library(remotes) 
 remotes::install_github("jmlondon/pathroutr")
 
 install.packages('gganimate')
 install.packages('ggspatial')
+
+#Install packages for YAPS lessons
+remotes::install_github("robertlennox/miscYAPS")
                                                             
                                                             
 
