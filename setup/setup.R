@@ -70,7 +70,17 @@ install.packages('ggspatial')
 
 #Install packages for YAPS lessons
 remotes::install_github("robertlennox/miscYAPS")
-                                                            
+
+#Install packages for GAMS lessons
+install.packages('mgcv')
+install.packages('Thermimage')
+install.packages('lunar')
+install.packages('gratia')
+
+#The basic animations lesson requires a Stadia Maps API key. You can set up your own if you want, or use the
+#one provided below:
+library(ggmap)
+ggmap::register_stadiamaps("b01d1235-69e8-49ea-b3bd-c35b42424b00")
                                                             
 
 ### Dataset and Code -----
