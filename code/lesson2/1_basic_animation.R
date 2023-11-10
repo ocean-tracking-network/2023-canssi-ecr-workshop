@@ -23,12 +23,12 @@ plot_data <- detection_events %>%
 one_fish <- plot_data[plot_data$animal_id == "NSBS-1393342-2021-08-10",] 
 
 basemap <- 
-  get_stamenmap(
+  get_stadiamap(
     bbox = c(left = min(one_fish$mean_longitude),
              bottom = min(one_fish$mean_latitude), 
              right = max(one_fish$mean_longitude), 
              top = max(one_fish$mean_latitude)),
-    maptype = "toner-lite",
+    maptype = "stamen_toner_lite",
     crop = FALSE, 
     zoom = 7)
 
