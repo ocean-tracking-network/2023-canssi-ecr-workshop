@@ -46,12 +46,12 @@ library(ggmap)
 
 names(hfx_deploy)
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(hfx_deploy$DEPLOY_LONG), 
            bottom = min(hfx_deploy$DEPLOY_LAT), 
            right = max(hfx_deploy$DEPLOY_LONG), 
            top = max(hfx_deploy$DEPLOY_LAT)),
-  maptype = "toner-lite", 
+  maptype = "stamen_toner_lite", 
   crop = FALSE,
   zoom = 5)
 
@@ -187,12 +187,12 @@ nsbs_matched_full_no_release <- nsbs_matched_full  %>%
   filter(receiver != "release")
 
 ## Detection/Release Map - Static ----
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(nsbs_matched_full_no_release$longitude),
            bottom = min(nsbs_matched_full_no_release$latitude), 
            right = max(nsbs_matched_full_no_release$longitude), 
            top = max(nsbs_matched_full_no_release$latitude)),
-  maptype = "toner-lite", 
+  maptype = "stamen_toner_lite", 
   crop = FALSE,
   zoom = 5)
 
